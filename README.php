@@ -5,8 +5,10 @@
 1. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
     `docker build -t php-yii2 .`
 
-2. MySQL is not included in image. Map ports to use external MySQL Server
+2. MySQL is not included in image. Map ports to use external MySQL Server. Remove --rm for
+production.
     `docker run --rm -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
+    `docker run -d -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
 
 3. For local testing, map local Sites folder to docker container
     `docker run --rm -p 80:80 -p 3306:3306 -v ~/Sites:/var/www/html --name my-php-yii2 -ti php-yii2

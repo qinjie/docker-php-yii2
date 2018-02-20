@@ -40,7 +40,7 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 COPY ./html/ /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/
 
-EXPOSE 80 443 22 3306
+EXPOSE 80 443 3306
 
 ENTRYPOINT service apache2 restart && bash
 
