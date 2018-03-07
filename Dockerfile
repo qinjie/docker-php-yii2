@@ -1,28 +1,78 @@
-FROM php:7.0-apache
+FROM php:7.2-apache
 
 # Use custom php ini file
 COPY php.ini /usr/local/etc/php/
 
-# Install dependencies
-RUN apt-get update
-RUN apt-get install -y zip curl vim
-RUN apt-get install -y libmcrypt-dev
-RUN apt-get install -y libmagickwand-dev imagemagick
-RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng12-dev
+# Install system packages for PHP extensions recommended for Yii 2.0 Framework
+RUN apt-get update && \
+    apt-get -y install \
+        gnupg2 && \
+    apt-get update && \
+    apt-get -y install \
+            g++ \
+            git \
+            curl \
+            apt-utils \
+            apt-transport-https \
+            libmcrypt-dev \
+            libfreetype6-dev \
+            libcurl3-dev \
+            libjpeg-dev \
+            libjpeg62-turbo-dev \
+            libpq-dev \
+            libpng-dev \
+            libxml2-dev \
+            zlib1g-dev \
+            mysql-client \
+            openssh-client \
+            nano \
+            unzip \
+            vim \
+        --no-install-recommends 
 
 RUN apt-get install -y libicu-dev \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
-RUN docker-php-ext-install pdo_mysql 
-RUN docker-php-ext-install mysqli 
-RUN docker-php-ext-install iconv
-RUN docker-php-ext-install zip
-RUN apt-get install libcurl3-dev libcurl4-openssl-dev \
-    && docker-php-ext-install curl 
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ 
-RUN docker-php-ext-install -j$(nproc) gd
 
-RUN pecl install imagick
+RUN docker-php-ext-install \
+        soap \
+        zip \
+        bcmath \
+        exif \
+        iconv \
+        mbstring \
+        opcache \
+        mysqli \
+        pdo_mysql \
+        pdo_pgsql
+
+RUN apt-get install -y libgmp-dev \
+    && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+    && docker-php-ext-configure gmp \
+    && docker-php-ext-install gmp
+
+#RUN docker-php-ext-configure mcrypat \
+#    && docker-php-ext-install mcrypt
+
+RUN apt-get install libcurl3-dev libcurl4-openssl-dev \
+    && docker-php-ext-install curl
+
+RUN docker-php-ext-configure bcmath \
+    && docker-php-ext-install  bcmath
+
+RUN docker-php-ext-configure gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ \
+    &&  docker-php-ext-install gd
+
+RUN apt-get install -y libmagickwand-dev imagemagick \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
+
+RUN apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Enable apache mods.
