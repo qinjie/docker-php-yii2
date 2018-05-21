@@ -1,24 +1,38 @@
+# Setup and Commands
+## Setup
+1. Copy `docker-php-yii2` folder to home folder.
 
-# Docker Commands
-0. Copy yii2 project folders to `html` folder
+2. Copy yii2 project folders to `html` folder
 
-1. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
+3. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
 
-    `docker build -t php-yii2 .`
+    `sudo docker build -t php-yii2 .`
 
-2. MySQL is not included in image. Map ports to use external MySQL Server. Remove `--rm` to run in background.
+## Run
+1. Run following commands
+    * stop and remove any existing running container named "my-php-yii2"
+    * execute script to run container 
+    ```
+    sudo docker stop my-php-yii2        
+    sudo docker rm my-php-yii2 
+    chmod +x docker-yii2-run-v-rds.sh
+    ./docker-yii2-run-v-rds.sh
+    ```
+
+# Docker Scripts
+1. MySQL is not included in image. Map ports to use external MySQL Server. Remove `--rm` to run in background.
 
     `docker run --rm -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
 
     `docker run -d -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
 
-3. For local testing, map local Sites folder to docker container. Remove `--rm` to run in background.
+2. For local testing, map local Sites folder to docker container. Remove `--rm` to run in background.
 
     `docker run --rm -p 80:80 -p 3306:3306 -v ~/sites:/var/www/html --name my-php-yii2 -ti php-yii2 bash`
 
     `docker run -p 80:80 -p 3306:3306 -v ~/sites:/var/www/html --name my-php-yii2 -ti php-yii2 bash`
 
-4. Other useful docker commands
+3. Other useful docker commands
     - Clean up all dangling docker
 
     `docker system prune`

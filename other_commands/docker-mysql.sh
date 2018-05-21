@@ -1,0 +1,1 @@
+sudo docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=MyPass1 -v /home/ubuntu/docker-mysql:/var/lib/mysql --name=mysql01 mysql/mysql-server
