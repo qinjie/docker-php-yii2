@@ -1,12 +1,27 @@
 # Setup and Commands
 ## Setup
+0. Clean up docker images
+
+   ```
+   docker image prune
+   docker rm $(docker ps -q -f 'status=exited')
+   docker rmi $(docker images -q -f "dangling=true")
+   ```
+
 1. Copy `docker-php-yii2` folder to home folder.
 
 2. Copy yii2 project folders to `html` folder
 
-3. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
+3. If sub-domain setup is required, cpoy conf files to sites-available folder
 
-    `sudo docker build -t php-yii2 .`
+4. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
+
+    `sudo docker build --no-cache -t php-yii2 .`
+
+5. To stop a container, find out container ID and run following command
+
+    `docker ps`
+    `docker stop <CONTAINER_ID>`
 
 ## Run
 1. Run following commands

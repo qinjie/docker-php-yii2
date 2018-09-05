@@ -90,6 +90,13 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 COPY ./html/ /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/
 
+# Copy site config for sub-domain sites
+COPY ./sites-available/ /etc/apache2/sites-available/
+
+# Change timezon setting
+RUN echo "Asia/Singapore" > /etc/timezone
+
+# Open ports
 EXPOSE 80 443 3306
 
 ENTRYPOINT service apache2 restart && bash
