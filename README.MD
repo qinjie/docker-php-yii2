@@ -1,32 +1,58 @@
-# Setup and Commands
+# Setup and Use
+
+Run following commands to install docker, build docker image, and run the image in container
+    
+    ```
+    sudo apt install docker.io
+    sudo docker build --no-cache -t php-yii2 .
+    chmod +x docker-yii2-run-v-rds.sh
+    ./docker-yii2-run-v-rds.sh
+    ```
+    
+# Commands
+
+## Install
+
+    ```
+    sudo apt install docker.io
+    ```
+
 ## Setup
+
 0. Clean up docker images
 
    ```
-   docker image prune
-   docker rm $(docker ps -q -f 'status=exited')
-   docker rmi $(docker images -q -f "dangling=true")
+   sudo docker image prune
+   sudo docker rm $(docker ps -q -f 'status=exited')
+   sudo docker rmi $(docker images -q -f "dangling=true")
    ```
 
 1. Copy `docker-php-yii2` folder to home folder.
 
 2. Copy yii2 project folders to `html` folder
 
-3. If sub-domain setup is required, cpoy conf files to sites-available folder
+3. If sub-domain setup is required, copy conf files to sites-available folder
 
 4. Build an image (with tag = php-yii2) where Dockerfile is in current directory.
 
-    `sudo docker build --no-cache -t php-yii2 .`
+    ```
+    sudo docker build --no-cache -t php-yii2 .
+    ```
 
 5. To stop a container, find out container ID and run following command
 
-    `docker ps`
-    `docker stop <CONTAINER_ID>`
+    ```
+    sudo docker ps
+    sudo docker stop <CONTAINER_ID>
+    ```
 
 ## Run
+
 1. Run following commands
+
     * stop and remove any existing running container named "my-php-yii2"
     * execute script to run container 
+
     ```
     sudo docker stop my-php-yii2        
     sudo docker rm my-php-yii2 
@@ -37,9 +63,13 @@
 # Docker Scripts
 1. MySQL is not included in image. Map ports to use external MySQL Server. Remove `--rm` to run in background.
 
-    `docker run --rm -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
+    ```
+    docker run --rm -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash
+    ```
 
-    `docker run -d -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash`
+    ```
+    docker run -d -p 80:80 -p 3306:3306 --name my-php-yii2 -ti php-yii2 bash
+    ```
 
 2. For local testing, map local Sites folder to docker container. Remove `--rm` to run in background.
 
