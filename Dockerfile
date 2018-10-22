@@ -99,5 +99,6 @@ RUN echo "Asia/Singapore" > /etc/timezone
 # Open ports
 EXPOSE 80 443 3306
 
-ENTRYPOINT service apache2 restart && bash
-
+# ENTRYPOINT service apache2 restart && bash
+EXPOSE 80
+CMD apachectl -D FOREGROUND

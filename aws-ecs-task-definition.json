@@ -1,0 +1,42 @@
+{
+  "family": "my-php-yii2",
+  "containerDefinitions": [
+    {
+      "name": "my-php-yii2",
+      "image": "markqj/php-yii2:latest",
+      "cpu": 1024,
+      "memoryReservation": 512,
+      "portMappings": [
+        {
+          "containerPort": 80,
+		  "hostPort": 80,
+          "protocol": "tcp"
+        },
+		{
+          "containerPort": 443,
+		  "hostPort": 443,
+          "protocol": "tcp"
+        },
+		{
+          "containerPort": 3306,
+		  "hostPort": 3306,
+          "protocol": "tcp"
+        }
+      ],
+	  "mountPoints": [
+		{
+			"sourceVolume": "webdata",
+			"containerPath": "/var/www/html"
+		}
+	  ]
+    }
+  ],
+  "volumes": [
+	{
+	 "name": "webdata",
+	 "host": {
+		 "sourcePath": "/home/ec2-user/html"
+		}
+	}
+  ]
+}

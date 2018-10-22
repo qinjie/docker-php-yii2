@@ -2,13 +2,23 @@
 
 Run following commands to install docker, build docker image, and run the image in container
     
+    Ubuntu
     ```
     sudo apt install docker.io
     sudo docker build --no-cache -t php-yii2 .
     chmod +x docker-yii2-run-v-rds.sh
     ./docker-yii2-run-v-rds.sh
     ```
-    
+
+    Amazon Linux
+    ```
+    sudo yum install docker
+    sudo service start docker
+    sudo docker build --no-cache -t php-yii2 .
+    chmod +x docker-yii2-run-v-rds.sh
+    ./docker-yii2-run-v-rds.sh
+    ```
+
 # Commands
 
 ## Install
@@ -135,4 +145,11 @@ RewriteRule . index.php
 	AllowOverride All
 	Require all granted
     </Directory>
+
+
+	
+# Working with AWS ECS
+
+## Register task definition in AWS 
+aws ecs register-task-definition --cli-input-json file://aws-ecs-task-definition.json --profile qinjie
 
