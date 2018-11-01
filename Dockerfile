@@ -95,6 +95,7 @@ COPY ./sites-available/ /etc/apache2/sites-available/
 
 # Change timezon setting
 RUN echo "Asia/Singapore" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Open ports
 EXPOSE 80 443 3306
